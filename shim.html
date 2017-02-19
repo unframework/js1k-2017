@@ -220,13 +220,71 @@ function lookAt(out, eye, center, up) {
     return out;
 }
 
+// tracker (from https://github.com/unframework/office-space/blob/2e33c164fac162954e787141693743fbf1f96f25/src/WalkCycleTracker.coffee)
+_footOffsetDistance = 0.6;
+_strideDuration = 0.25;
+_footLift = 0.3;
+_walkPos = [ 0, 0 ];
+_walkAngle = 0;
+_strideTime = 0;
+_walkFootLStartPos = [ 2 - _footOffsetDistance, 0 ];
+_walkFootRStartPos = [ 2 + _footOffsetDistance, 0 ];
+_walkFootLLiftPos = [ 2 - _footOffsetDistance, 0 ];
+_walkFootRLiftPos = [ 2 + _footOffsetDistance, 0 ];
+_leftFootIsMoving = true;
+_tmpFootLocalOffset = [ 0, 0 ];
+_movingFootCurrentPos = [ 0, 0 ];
+_movingFootEndPos = [ 0, 0 ];
+footLMeshOffset = new Float32Array(3);
+footRMeshOffset = new Float32Array(3);
+
+STRIDE_FOOT_SUPPORT_FRACTION = 0.5;
+
+vec2set = (v,a,b) => {v[0] = a;v[1] = b}
+vec2copy = (v,a) => {v[0] = a[0];v[1] = a[1]}
+vec2add = (o,a,b) => {o[0] = a[0] + b[0];o[1] = a[1] + b[1]}
+vec2pscale = (v,a) => {v[0] *= a;v[1] *= a}
+vec2lerp = (v,a,b,k) => {v[0] = a[0] + (b[0] - a[0]) * k;v[1] = a[1] + (b[1] - a[1]) * k}
+
+vec3set = (v,a,b,c) => {v[0] = a;v[1] = b;v[2] = c}
+
+updateCycle = (dt) => {
+  _strideTime += dt;
+  strideOverflow = Math.floor(_strideTime / _strideDuration);
+  _strideTime -= strideOverflow * _strideDuration;
+
+  if (strideOverflow > 0) {
+    _leftFootIsMoving = !_leftFootIsMoving;
+  }
+
+  phase = _strideTime / _strideDuration;
+  footAlong = 0.5 * (1 - Math.cos(Math.PI * phase));
+  footAnim = (1 - footAlong) * (1 - footAlong);
+
+  ref = _leftFootIsMoving ? [_walkFootLStartPos, _walkFootLLiftPos, footLMeshOffset] : [_walkFootRStartPos, _walkFootRLiftPos, footRMeshOffset], movingFootStartPos = ref[0], movingFootLiftPos = ref[1], movingFootOffset = ref[2];
+  ref1 = _leftFootIsMoving ? [_walkFootRStartPos, _walkFootRLiftPos, footRMeshOffset] : [_walkFootLStartPos, _walkFootLLiftPos, footLMeshOffset], stuckFootStartPos = ref1[0], stuckFootLiftPos = ref1[1], stuckFootOffset = ref1[2];
+
+  vec2set(_tmpFootLocalOffset, -Math.sin(_walkAngle), Math.cos(_walkAngle));
+  vec2pscale(_tmpFootLocalOffset, _footOffsetDistance * (_leftFootIsMoving ? 1 : -1));
+  vec2add(_movingFootCurrentPos, _walkPos, _tmpFootLocalOffset);
+
+  remainingStrideTime = _strideDuration - _strideTime;
+  vec2lerp(_movingFootEndPos, _movingFootCurrentPos, movingFootStartPos, -(remainingStrideTime + (1 - STRIDE_FOOT_SUPPORT_FRACTION) * _strideDuration) / (STRIDE_FOOT_SUPPORT_FRACTION * _strideDuration + _strideTime));
+  vec2lerp(movingFootLiftPos, movingFootStartPos, _movingFootEndPos, 1 - footAnim);
+  vec3set(movingFootOffset, movingFootLiftPos[0], movingFootLiftPos[1], phase * footAnim * 2 * _footLift);
+
+  vec2copy(stuckFootStartPos, stuckFootLiftPos);
+  vec3set(stuckFootOffset, stuckFootStartPos[0], stuckFootStartPos[1], 0);
+}
+
+// view
 proj = ortho(new Float32Array(16), -4, 4, -4, 4, -8, 8);
 view = lookAt(new Float32Array(16), [ 2, 2, 2 ], [ 0, 0, 0 ], [ 0, 0, 1 ]);
 
 // prog
 P = g.createProgram()
 
-g.shaderSource(A=g.createShader(35633),"precision mediump float; attribute vec2 P; uniform vec2 pos; uniform float size; uniform mat4 proj,view; varying vec2 fP; void main(){fP = P; gl_Position=proj * (view * vec4(pos + P*size,0,1));}")
+g.shaderSource(A=g.createShader(35633),"precision mediump float; attribute vec2 P; uniform vec3 pos; uniform float size; uniform mat4 proj,view; varying vec2 fP; void main(){fP = P; gl_Position=proj * (view * vec4(pos + vec3(P*size, 0),1));}")
 g.compileShader(A);console.log(g.getShaderInfoLog(A));g.attachShader(P,A)
 
 g.shaderSource(A=g.createShader(35632),"precision mediump float; varying vec2 fP; void main(){ if(dot(fP,fP) > 1.0) discard; gl_FragColor=vec4(fP * 0.2 + vec2(0.6, 0.6), 0, 1); }")
@@ -252,16 +310,21 @@ time = 0;
 
   g.clear(g.DEPTH_BUFFER_BIT | g.COLOR_BUFFER_BIT);
 
+  apos = time / 2;
+  vec2set(_walkPos, 2 * Math.cos(apos), 2 * Math.sin(apos));
+  _walkAngle = apos + Math.PI / 2;
+  updateCycle(dt)
+
   g.uniform1f(g.getUniformLocation(P,"size"), 0.15)
-  g.uniform2f(g.getUniformLocation(P,"pos"), Math.cos(time) * 2, Math.sin(time) * 2)
+  g.uniform3f(g.getUniformLocation(P,"pos"), _walkPos[0], _walkPos[1], 0.3)
   g.drawArrays(6,0,4);
 
   g.uniform1f(g.getUniformLocation(P,"size"), 0.1)
-  g.uniform2f(g.getUniformLocation(P,"pos"), Math.cos(time) * (2 + 0.35), Math.sin(time) * (2 + 0.35))
+  g.uniform3fv(g.getUniformLocation(P,"pos"), footLMeshOffset)
   g.drawArrays(6,0,4);
 
   g.uniform1f(g.getUniformLocation(P,"size"), 0.1)
-  g.uniform2f(g.getUniformLocation(P,"pos"), Math.cos(time) * (2 - 0.35), Math.sin(time) * (2 - 0.35))
+  g.uniform3fv(g.getUniformLocation(P,"pos"), footRMeshOffset)
   g.drawArrays(6,0,4);
 
   requestAnimationFrame(draw);
