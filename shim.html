@@ -223,7 +223,7 @@ function lookAt(out, eye, center, up) {
 // tracker (from https://github.com/unframework/office-space/blob/2e33c164fac162954e787141693743fbf1f96f25/src/WalkCycleTracker.coffee)
 _footOffsetDistance = 0.6;
 _strideDuration = 0.25;
-_footLift = 0.3;
+_footLift = 1.5;
 _walkPos = [ 0, 0 ];
 _walkAngle = 0;
 _strideTime = 0;
@@ -261,9 +261,7 @@ updateCycle = (dt) => {
   footAlong = 0.5 * (1 - Math.cos(Math.PI * phase));
   footAnim = (1 - footAlong) * (1 - footAlong);
 
-  ref = _leftFootIsMoving ? [_walkFootLStartPos, _walkFootLLiftPos, footLMeshOffset] : [_walkFootRStartPos, _walkFootRLiftPos, footRMeshOffset], movingFootStartPos = ref[0], movingFootLiftPos = ref[1], movingFootOffset = ref[2];
-  ref1 = _leftFootIsMoving ? [_walkFootRStartPos, _walkFootRLiftPos, footRMeshOffset] : [_walkFootLStartPos, _walkFootLLiftPos, footLMeshOffset], stuckFootStartPos = ref1[0], stuckFootLiftPos = ref1[1], stuckFootOffset = ref1[2];
-
+  f = (movingFootStartPos, movingFootLiftPos, movingFootOffset, stuckFootStartPos, stuckFootLiftPos, stuckFootOffset) => {
   vec2set(_tmpFootLocalOffset, -Math.sin(_walkAngle), Math.cos(_walkAngle));
   vec2pscale(_tmpFootLocalOffset, _footOffsetDistance * (_leftFootIsMoving ? 1 : -1));
   vec2add(_movingFootCurrentPos, _walkPos, _tmpFootLocalOffset);
@@ -275,6 +273,13 @@ updateCycle = (dt) => {
 
   vec2copy(stuckFootStartPos, stuckFootLiftPos);
   vec3set(stuckFootOffset, stuckFootStartPos[0], stuckFootStartPos[1], 0);
+  }
+
+  _leftFootIsMoving ? f(
+    _walkFootLStartPos, _walkFootLLiftPos, footLMeshOffset, _walkFootRStartPos, _walkFootRLiftPos, footRMeshOffset
+  ) : f(
+    _walkFootRStartPos, _walkFootRLiftPos, footRMeshOffset, _walkFootLStartPos, _walkFootLLiftPos, footLMeshOffset
+  )
 }
 
 // view
@@ -310,7 +315,7 @@ time = 0;
 
   g.clear(g.DEPTH_BUFFER_BIT | g.COLOR_BUFFER_BIT);
 
-  apos = time / 2;
+  apos = time * 1.5;
   vec2set(_walkPos, 2 * Math.cos(apos), 2 * Math.sin(apos));
   _walkAngle = apos + Math.PI / 2;
   updateCycle(dt)
