@@ -249,6 +249,7 @@ time = 0;
 (draw = () => {
   dt = 0.016;
 
+  g.clear(g.DEPTH_BUFFER_BIT | g.COLOR_BUFFER_BIT);
   g.uniform1f(g.getUniformLocation(P,"time"), time += dt)
   g.drawArrays(6,0,4);
 
