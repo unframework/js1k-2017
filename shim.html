@@ -290,36 +290,30 @@ v2l = (v,a,b,k) => {v[0] = a[0] + (b[0] - a[0]) * k;v[1] = a[1] + (b[1] - a[1]) 
 v3s = (v,a,b,c) => {v[0] = a;v[1] = b;v[2] = c}
 
 updateCycle = () => {
-  sT += dt;
-  strideOverflow = Math.floor(sT / S_D);
-  sT -= strideOverflow * S_D;
+sT += dt;
+strideOverflow = Math.floor(sT / S_D);
+sT -= strideOverflow * S_D;
 
-  if (strideOverflow > 0) {
-    lfOn = !lfOn;
-  }
+if (strideOverflow > 0) lfOn = !lfOn
 
-  phase = sT / S_D;
-  footAlong = 0.5 * (1 - Math.cos(Math.PI * phase));
-  footAnim = (1 - footAlong) * (1 - footAlong);
+phase = sT / S_D;
+footAlong = 0.5 * (1 - Math.cos(Math.PI * phase));
+footAnim = (1 - footAlong) * (1 - footAlong);
 
-  f = (mfsP, mflP, mfO, sfsP, sflP, sfO) => {
-  flo = F_O * (lfOn ? 1 : -1);
-  v2s(tmfcP, wPx - Math.sin(wA) * flo, wPy + Math.cos(wA) * flo)
+f = (mfsP, mflP, mfO, sfsP, sflP, sfO) => {
+flo = F_O * (lfOn ? 1 : -1);
+v2s(tmfcP, wPx - Math.sin(wA) * flo, wPy + Math.cos(wA) * flo)
 
-  remainingStrideTime = S_D - sT;
-  v2l(tmfeP, tmfcP, mfsP, -(remainingStrideTime + (1 - 0.5) * S_D) / (0.5 * S_D + sT));
-  v2l(mflP, mfsP, tmfeP, 1 - footAnim);
-  v3s(mfO, mflP[0], mflP[1], phase * footAnim * 2 * 0.75);
+remainingStrideTime = S_D - sT;
+v2l(tmfeP, tmfcP, mfsP, -(remainingStrideTime + (1 - 0.5) * S_D) / (0.5 * S_D + sT));
+v2l(mflP, mfsP, tmfeP, 1 - footAnim);
+v3s(mfO, mflP[0], mflP[1], phase * footAnim * 2 * 0.75);
 
-  v2c(sfsP, sflP);
-  v3s(sfO, sfsP[0], sfsP[1], 0);
-  }
+v2c(sfsP, sflP);
+v3s(sfO, sfsP[0], sfsP[1], 0);
+}
 
-  lfOn ? f(
-    wfLsP, wfLlP, footLMeshOffset, wfRsP, wfRlP, footRMeshOffset
-  ) : f(
-    wfRsP, wfRlP, footRMeshOffset, wfLsP, wfLlP, footLMeshOffset
-  )
+lfOn ? f(wfLsP, wfLlP, footLMeshOffset, wfRsP, wfRlP, footRMeshOffset) : f(wfRsP, wfRlP, footRMeshOffset, wfLsP, wfLlP, footLMeshOffset)
 }
 
 // prog
