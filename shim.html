@@ -265,17 +265,19 @@ f32=Float32Array
 view = new f32([-.177,-.102,-.072,0,.177,-.102,-.072,0,0,.204,-.072,0,-0,-0,.433,1])
 
 // tracker (from https://github.com/unframework/office-space/blob/2e33c164fac162954e787141693743fbf1f96f25/src/WalkCycleTracker.coffee)
+dt=.016
+wPx=0
+wPy=0
+wA=0
+
 F_O = 0.2;
 S_D = 0.15;
-_walkPos = [ 0, 0 ];
-_walkAngle = 0;
 sT = 0;
 wfLsP = [ 2 - F_O, 0 ];
 wfLlP = [ 2 - F_O, 0 ];
 wfRsP = [ 2 + F_O, 0 ];
 wfRlP = [ 2 + F_O, 0 ];
-_leftFootIsMoving = true;
-_tmpFootLocalOffset = [ 0, 0 ];
+lfOn = true;
 tmfcP = [ 0, 0 ];
 tmfeP = [ 0, 0 ];
 footLMeshOffset = new f32(3);
@@ -287,13 +289,13 @@ v2l = (v,a,b,k) => {v[0] = a[0] + (b[0] - a[0]) * k;v[1] = a[1] + (b[1] - a[1]) 
 
 v3s = (v,a,b,c) => {v[0] = a;v[1] = b;v[2] = c}
 
-updateCycle = (dt) => {
+updateCycle = () => {
   sT += dt;
   strideOverflow = Math.floor(sT / S_D);
   sT -= strideOverflow * S_D;
 
   if (strideOverflow > 0) {
-    _leftFootIsMoving = !_leftFootIsMoving;
+    lfOn = !lfOn;
   }
 
   phase = sT / S_D;
@@ -301,8 +303,8 @@ updateCycle = (dt) => {
   footAnim = (1 - footAlong) * (1 - footAlong);
 
   f = (mfsP, mflP, mfO, sfsP, sflP, sfO) => {
-  flo = F_O * (_leftFootIsMoving ? 1 : -1);
-  v2s(tmfcP, _walkPos[0] - Math.sin(_walkAngle) * flo, _walkPos[1] + Math.cos(_walkAngle) * flo)
+  flo = F_O * (lfOn ? 1 : -1);
+  v2s(tmfcP, wPx - Math.sin(wA) * flo, wPy + Math.cos(wA) * flo)
 
   remainingStrideTime = S_D - sT;
   v2l(tmfeP, tmfcP, mfsP, -(remainingStrideTime + (1 - 0.5) * S_D) / (0.5 * S_D + sT));
@@ -313,7 +315,7 @@ updateCycle = (dt) => {
   v3s(sfO, sfsP[0], sfsP[1], 0);
   }
 
-  _leftFootIsMoving ? f(
+  lfOn ? f(
     wfLsP, wfLlP, footLMeshOffset, wfRsP, wfRlP, footRMeshOffset
   ) : f(
     wfRsP, wfRlP, footRMeshOffset, wfLsP, wfLlP, footLMeshOffset
@@ -343,18 +345,17 @@ g.enable(g.DEPTH_TEST);
 
 time = 0;
 (draw = () => {
-  dt = 0.016;
   time += dt;
 
   // g.clear(g.DEPTH_BUFFER_BIT | g.COLOR_BUFFER_BIT);
 
   apos = time * 0.5;
-  v2s(_walkPos, 2 * Math.cos(apos), 2 * Math.sin(apos));
-  _walkAngle = apos + Math.PI / 2;
+  wPx=2 * Math.cos(apos);wPy=2 * Math.sin(apos)
+  wA = apos + Math.PI / 2;
   updateCycle(dt)
 
   g.uniform1f(g.getUniformLocation(P,"size"), 0.15)
-  g.uniform3f(g.getUniformLocation(P,"pos"), _walkPos[0], _walkPos[1], 0.3)
+  g.uniform3f(g.getUniformLocation(P,"pos"), wPx, wPy, 0.3)
   g.drawArrays(6,0,4);
 
   g.uniform1f(g.getUniformLocation(P,"size"), 0.1)
