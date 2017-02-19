@@ -226,7 +226,7 @@ view = lookAt(new Float32Array(16), [ 2, 2, 2 ], [ 0, 0, 0 ], [ 0, 0, 1 ]);
 // prog
 P = g.createProgram()
 
-g.shaderSource(A=g.createShader(35633),"precision mediump float; attribute vec2 P; uniform mat4 proj,view; varying vec2 fP; void main(){fP = P; gl_Position=proj * (view * vec4(P,0,1));}")
+g.shaderSource(A=g.createShader(35633),"precision mediump float; attribute vec2 P; uniform float time; uniform mat4 proj,view; varying vec2 fP; void main(){fP = P; gl_Position=proj * (view * vec4(P,sin(time),1));}")
 g.compileShader(A);console.log(g.getShaderInfoLog(A));g.attachShader(P,A)
 
 g.shaderSource(A=g.createShader(35632),"precision mediump float; varying vec2 fP; void main(){ gl_FragColor=vec4(fP * 0.2 + vec2(0.6, 0.6), 0, 1); }")
@@ -244,7 +244,16 @@ g.uniformMatrix4fv(g.getUniformLocation(P,"proj"), false, proj)
 g.uniformMatrix4fv(g.getUniformLocation(P,"view"), false, view)
 
 g.enable(g.DEPTH_TEST);
-g.drawArrays(6,0,4)
+
+time = 0;
+(draw = () => {
+  dt = 0.016;
+
+  g.uniform1f(g.getUniformLocation(P,"time"), time += dt)
+  g.drawArrays(6,0,4);
+
+  requestAnimationFrame(draw);
+})()
 
       // END
     </script>
