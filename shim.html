@@ -253,14 +253,16 @@ function multiply(out, a, b) {
     return out;
 }
 
-
-// view
-view = multiply(new Float32Array(16),
+console.log(multiply([],
   ortho([], -4, 4, -4, 4, -8, 8),
   lookAt([], [ 2, 2, 2 ], [ 0, 0, 0 ], [ 0, 0, 1 ])
-)
+));
 
-console.log(view);
+// ----
+f32=Float32Array
+
+// view
+view = new f32([-.177,-.102,-.072,0,.177,-.102,-.072,0,0,.204,-.072,0,-0,-0,.433,1])
 
 // tracker (from https://github.com/unframework/office-space/blob/2e33c164fac162954e787141693743fbf1f96f25/src/WalkCycleTracker.coffee)
 FOOT_OFFSET = 0.2;
@@ -277,8 +279,8 @@ _leftFootIsMoving = true;
 _tmpFootLocalOffset = [ 0, 0 ];
 tmpMFootCurPos = [ 0, 0 ];
 tmpMFootEndPos = [ 0, 0 ];
-footLMeshOffset = new Float32Array(3);
-footRMeshOffset = new Float32Array(3);
+footLMeshOffset = new f32(3);
+footRMeshOffset = new f32(3);
 
 v2s = (v,a,b) => {v[0] = a;v[1] = b}
 v2c = (v,a) => {v[0] = a[0];v[1] = a[1]}
