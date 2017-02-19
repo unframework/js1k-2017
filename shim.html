@@ -252,8 +252,16 @@ time = 0;
 
   g.clear(g.DEPTH_BUFFER_BIT | g.COLOR_BUFFER_BIT);
 
+  g.uniform1f(g.getUniformLocation(P,"size"), 0.15)
+  g.uniform2f(g.getUniformLocation(P,"pos"), Math.cos(time) * 2, Math.sin(time) * 2)
+  g.drawArrays(6,0,4);
+
   g.uniform1f(g.getUniformLocation(P,"size"), 0.1)
-  g.uniform2f(g.getUniformLocation(P,"pos"), Math.cos(time), Math.sin(time))
+  g.uniform2f(g.getUniformLocation(P,"pos"), Math.cos(time) * (2 + 0.35), Math.sin(time) * (2 + 0.35))
+  g.drawArrays(6,0,4);
+
+  g.uniform1f(g.getUniformLocation(P,"size"), 0.1)
+  g.uniform2f(g.getUniformLocation(P,"pos"), Math.cos(time) * (2 - 0.35), Math.sin(time) * (2 - 0.35))
   g.drawArrays(6,0,4);
 
   requestAnimationFrame(draw);
