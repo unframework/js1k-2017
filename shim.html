@@ -242,8 +242,6 @@ STRIDE_FOOT_SUPPORT_FRACTION = 0.5;
 
 vec2set = (v,a,b) => {v[0] = a;v[1] = b}
 vec2copy = (v,a) => {v[0] = a[0];v[1] = a[1]}
-vec2add = (o,a,b) => {o[0] = a[0] + b[0];o[1] = a[1] + b[1]}
-vec2pscale = (v,a) => {v[0] *= a;v[1] *= a}
 vec2lerp = (v,a,b,k) => {v[0] = a[0] + (b[0] - a[0]) * k;v[1] = a[1] + (b[1] - a[1]) * k}
 
 vec3set = (v,a,b,c) => {v[0] = a;v[1] = b;v[2] = c}
@@ -262,9 +260,8 @@ updateCycle = (dt) => {
   footAnim = (1 - footAlong) * (1 - footAlong);
 
   f = (movingFootStartPos, movingFootLiftPos, movingFootOffset, stuckFootStartPos, stuckFootLiftPos, stuckFootOffset) => {
-  vec2set(_tmpFootLocalOffset, -Math.sin(_walkAngle), Math.cos(_walkAngle));
-  vec2pscale(_tmpFootLocalOffset, _footOffsetDistance * (_leftFootIsMoving ? 1 : -1));
-  vec2add(_movingFootCurrentPos, _walkPos, _tmpFootLocalOffset);
+  flo = _footOffsetDistance * (_leftFootIsMoving ? 1 : -1);
+  vec2set(_movingFootCurrentPos, _walkPos[0] - Math.sin(_walkAngle) * flo, _walkPos[1] + Math.cos(_walkAngle) * flo)
 
   remainingStrideTime = _strideDuration - _strideTime;
   vec2lerp(_movingFootEndPos, _movingFootCurrentPos, movingFootStartPos, -(remainingStrideTime + (1 - STRIDE_FOOT_SUPPORT_FRACTION) * _strideDuration) / (STRIDE_FOOT_SUPPORT_FRACTION * _strideDuration + _strideTime));
