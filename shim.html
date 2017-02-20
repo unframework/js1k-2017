@@ -267,44 +267,38 @@ wPx=0
 wPy=0
 wA=0
 
-F_O=0.3
-S_D=0.15
+F_=0.3
+SD=0.15
 sT=0
-wfLsP=[0,F_O]
-wfLlP=[0,F_O]
-wfRsP=[0,-F_O]
-wfRlP=[0,-F_O]
-lfOn=true
-tmfcP=[]
-tmfeP=[]
-lfO=[]
-rfO=[]
+wfLsP=[0,F_]
+wfLlP=[0,F_]
+wfRsP=[0,-F_]
+wfRlP=[0,-F_]
+lf=true
+mcP=[]
+meP=[]
+lO=[]
+rO=[]
 
-v2l=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
-v3s=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
+l2=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
+s3=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
 
 updateCycle = () => {
 sT+=dt
-if(sT>S_D) {sT-=S_D;lfOn=!lfOn}
-
-ph=sT/S_D
-fa=1-0.5*(1-Math.cos(Math.PI*ph))
+if(sT>SD)sT-=SD,lf=!lf
+ph=sT/SD
+fa=1-.5*(1-Math.cos(Math.PI*ph))
 fa*=fa
-
-f = (mfsP,mflP,mfO,sfsP,sflP,sfO) => {
-flo = F_O*(lfOn ? 1 : -1);
-tmfcP[0]=wPx-Math.sin(wA)*flo;tmfcP[1]=wPy+Math.cos(wA)*flo
-
-rst = S_D - sT;
-v2l(tmfeP,tmfcP,mfsP,-(rst+(1-0.5)*S_D) / (0.5*S_D+sT));
-v2l(mflP,mfsP,tmfeP,1-fa);
-v3s(mfO,mflP[0],mflP[1],ph*fa*2*0.75);
-
-sfsP[0]=sflP[0];sfsP[1]=sflP[1]
-v3s(sfO,sfsP[0],sfsP[1],0);
+f=(msP,mlP,mO,ssP,slP,sO) => {
+o=F_*(lf*2-1)
+mcP[0]=wPx-Math.sin(wA)*o;mcP[1]=wPy+Math.cos(wA)*o
+rst=SD-sT
+l2(meP,mcP,msP,-(rst+(1-0.5)*SD) / (0.5*SD+sT))
+l2(mlP,msP,meP,1-fa)
+s3(mO,mlP[0],mlP[1],ph*fa*2*0.75)
+s3(sO,ssP[0]=slP[0],ssP[1]=slP[1],0)
 }
-
-lfOn ? f(wfLsP,wfLlP,lfO,wfRsP,wfRlP,rfO) : f(wfRsP,wfRlP,rfO,wfLsP,wfLlP,lfO)
+lf?f(wfLsP,wfLlP,lO,wfRsP,wfRlP,rO):f(wfRsP,wfRlP,rO,wfLsP,wfLlP,lO)
 }
 
 // prog
@@ -340,10 +334,10 @@ mx=0;my=0;a.onmousemove=(e)=>{mx=8*e.clientX/aw-4;my=(8*(ah-e.clientY)/ah-4)/0.7
 
   g.uniform2f(pM, wPx, wPy)
 
-  g.uniform3fv(pF, lfO)
+  g.uniform3fv(pF, lO)
   g.drawArrays(3,0,3);
 
-  g.uniform3fv(pF, rfO)
+  g.uniform3fv(pF, rO)
   g.drawArrays(3,0,3);
 
   requestAnimationFrame(draw);
