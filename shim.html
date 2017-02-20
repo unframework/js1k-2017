@@ -262,21 +262,18 @@ console.log(multiply([],
 
 // ----
 // tracker (from https://github.com/unframework/office-space/blob/2e33c164fac162954e787141693743fbf1f96f25/src/WalkCycleTracker.coffee)
+M=Math
 dt=.016
-wPx=0
-wPy=0
-wA=0
-
+wx=wy=wA=sT=0
 F_=.3
 SD=.15
-sT=0
-wfLsP=[0,F_]
-wfLlP=[0,F_]
-wfRsP=[0,-F_]
-wfRlP=[0,-F_]
-lf=true
-mcP=[]
-meP=[]
+Ls=[0,F_]
+Ll=[0,F_]
+Rs=[0,-F_]
+Rl=[0,-F_]
+lf=1
+mc=[]
+me=[]
 lO=[]
 rO=[]
 
@@ -289,18 +286,18 @@ s3=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
 uC=_=>{sT+=dt
 if(sT>SD)sT-=SD,lf=!lf
 ph=sT/SD
-fa=1-.5*(1-Math.cos(Math.PI*ph))
+fa=1-.5*(1-M.cos(M.PI*ph))
 fa*=fa
-f=(msP,mlP,mO,ssP,slP,sO)=>{
+f=(ms,ml,m,ss,sl,s)=>{
 o=F_*(lf*2-1)
-mcP[0]=wPx-Math.sin(wA)*o;mcP[1]=wPy+Math.cos(wA)*o
+mc[0]=wx-M.sin(wA)*o;mc[1]=wy+M.cos(wA)*o
 rst=SD-sT
-l2(meP,mcP,msP,-(rst+(1-.5)*SD) / (.5*SD+sT))
-l2(mlP,msP,meP,1-fa)
-s3(mO,mlP[0],mlP[1],ph*fa*2*.75)
-s3(sO,ssP[0]=slP[0],ssP[1]=slP[1],0)
+l2(me,mc,ms,-(rst+(1-.5)*SD) / (.5*SD+sT))
+l2(ml,ms,me,1-fa)
+s3(m,ml[0],ml[1],ph*fa*2*.75)
+s3(s,ss[0]=sl[0],ss[1]=sl[1],0)
 }
-lf?f(wfLsP,wfLlP,lO,wfRsP,wfRlP,rO):f(wfRsP,wfRlP,rO,wfLsP,wfLlP,lO)}
+lf?f(Ls,Ll,lO,Rs,Rl,rO):f(Rs,Rl,rO,Ls,Ll,lO)}
 
 P=g.createProgram()
 cs=(c,s)=>g.shaderSource(A=g.createShader(c),s)&g.compileShader(A)&g.attachShader(P,A)
@@ -323,14 +320,14 @@ g.uniformMatrix4fv(l("V"),0,[.25,0,0,0,0,.177,.088,0,0,.177,-.088,0,0,0,.354,1])
 g.enable(2929)
 
 dr=_=>{
-dx=mx-wPx;dy=my-wPy
-h=Math.hypot(dx,dy)
-nh=Math.max(-1,Math.min(1,h))*.03
-if(h>.01){wPx+=dx*nh/h;wPy+=dy*nh/h;wA=Math.atan2(dy,dx)}
+dx=mx-wx;dy=my-wy
+h=M.hypot(dx,dy)
+nh=M.max(-1,M.min(1,h))*.03
+if(h>.01){wx+=dx*nh/h;wy+=dy*nh/h;wA=M.atan2(dy,dx)}
 
 uC()
 
-g.uniform2f(pM, wPx, wPy)
+g.uniform2f(pM, wx, wy)
 
 f=(p,O)=>g.uniform3fv(p,O)&g.drawArrays(3,0,3)
 f(pF,lO)
