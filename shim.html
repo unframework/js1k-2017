@@ -324,37 +324,38 @@ g.compileShader(A);console.log(g.getShaderInfoLog(A));g.attachShader(P,A)
 
 g.linkProgram(P);g.useProgram(P)
 
+progSize=g.getUniformLocation(P,"size")
+progPos=g.getUniformLocation(P,"pos")
+
 g.bindBuffer(A=34962,g.createBuffer())
-g.bufferData(A,new Int8Array([-1,-1, 1,-1, 1,1, -1,1]),35044)
+g.bufferData(A,new f32([-1,-1, 1,-1, 1,1, -1,1]),35044)
 
 g.enableVertexAttribArray(0)
-g.vertexAttribPointer(b=0,2,5120,0,0,0)
+g.vertexAttribPointer(b=0,2,5126,0,0,0)
 
 g.uniformMatrix4fv(g.getUniformLocation(P,"view"), false, view)
 
-g.enable(g.DEPTH_TEST);
+g.enable(2929);
 
 time = 0;
 (draw = () => {
   time += dt;
-
-  // g.clear(g.DEPTH_BUFFER_BIT | g.COLOR_BUFFER_BIT);
 
   apos = time * 0.5;
   wPx=2 * Math.cos(apos);wPy=2 * Math.sin(apos)
   wA = apos + Math.PI / 2;
   updateCycle(dt)
 
-  g.uniform1f(g.getUniformLocation(P,"size"), 0.15)
-  g.uniform3f(g.getUniformLocation(P,"pos"), wPx, wPy, 0.3)
+  g.uniform1f(progSize, 0.15)
+  g.uniform3f(progPos, wPx, wPy, 0.3)
   g.drawArrays(6,0,4);
 
-  g.uniform1f(g.getUniformLocation(P,"size"), 0.1)
-  g.uniform3fv(g.getUniformLocation(P,"pos"), footLMeshOffset)
+  g.uniform1f(progSize, 0.1)
+  g.uniform3fv(progPos, footLMeshOffset)
   g.drawArrays(6,0,4);
 
-  g.uniform1f(g.getUniformLocation(P,"size"), 0.1)
-  g.uniform3fv(g.getUniformLocation(P,"pos"), footRMeshOffset)
+  g.uniform1f(progSize, 0.1)
+  g.uniform3fv(progPos, footRMeshOffset)
   g.drawArrays(6,0,4);
 
   requestAnimationFrame(draw);
