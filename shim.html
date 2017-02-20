@@ -259,11 +259,6 @@ console.log(multiply([],
 ));
 
 // ----
-f32=Float32Array
-
-// view
-view = new f32([.25,0,0,0,0,.177,.088,0,0,.177,-.088,0,0,0,.354,1])
-
 // tracker (from https://github.com/unframework/office-space/blob/2e33c164fac162954e787141693743fbf1f96f25/src/WalkCycleTracker.coffee)
 dt=.016
 wPx=0
@@ -280,8 +275,8 @@ wfRlP=[0,-F_O]
 lfOn=true
 tmfcP=[]
 tmfeP=[]
-lfO=new f32(3)
-rfO=new f32(3)
+lfO=[]
+rfO=[]
 
 v2l=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
 v3s=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
@@ -325,12 +320,12 @@ progSize=g.getUniformLocation(P,"size")
 progPos=g.getUniformLocation(P,"pos")
 
 g.bindBuffer(A=34962,g.createBuffer())
-g.bufferData(A,new f32([-1,-1, 1,-1, 1,1, -1,1]),35044)
+g.bufferData(A,new Float32Array([-1,-1, 1,-1, 1,1, -1,1]),35044)
 
 g.enableVertexAttribArray(0)
 g.vertexAttribPointer(b=0,2,5126,0,0,0)
 
-g.uniformMatrix4fv(g.getUniformLocation(P,"view"), false, view)
+g.uniformMatrix4fv(g.getUniformLocation(P,"view"),false,[.25,0,0,0,0,.177,.088,0,0,.177,-.088,0,0,0,.354,1])
 
 g.enable(2929);
 
