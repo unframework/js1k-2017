@@ -342,8 +342,9 @@ mx=0;my=0;a.onmousemove=(e)=>{mx=8*e.clientX/aw-4;my=(8*(ah-e.clientY)/ah-4)/0.7
 
 (draw = () => {
   dx=mx-wPx;dy=my-wPy
-  wPx+=Math.max(-1,Math.min(1,dx*0.01));wPy+=Math.max(-1,Math.min(1,dy*0.01))
-  wA=dx*dx+dy*dy>0.1?Math.atan2(dy,dx):wA
+  h=Math.hypot(dx,dy)
+  nh=Math.max(-1,Math.min(1,h))*0.03
+  if(h>0.01){wPx+=dx*nh/h;wPy+=dy*nh/h;wA=Math.atan2(dy,dx)}
 
   updateCycle()
 
