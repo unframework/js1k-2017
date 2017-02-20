@@ -286,7 +286,7 @@ mx=0;my=0;a.onmousemove=e=>{mx=8*e.clientX/aw-4;my=(8*(ah-e.clientY)/ah-4)/0.707
 l2=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
 s3=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
 
-updateCycle = () => {
+uC = () => {
 sT+=dt
 if(sT>SD)sT-=SD,lf=!lf
 ph=sT/SD
@@ -304,7 +304,6 @@ s3(sO,ssP[0]=slP[0],ssP[1]=slP[1],0)
 lf?f(wfLsP,wfLlP,lO,wfRsP,wfRlP,rO):f(wfRsP,wfRlP,rO,wfLsP,wfLlP,lO)
 }
 
-// prog
 P = g.createProgram()
 cs=(c,s)=>g.shaderSource(A=g.createShader(c),s)||g.compileShader(A)||g.attachShader(P,A)
 cs(35633,"precision mediump float; attribute vec2 mx; uniform vec2 M; uniform vec3 F; uniform mat4 V; void main(){vec3 ds=F-vec3(M, 0.2);float d=length(ds.xy);vec3 dc=vec3(-ds.z*ds.xy/d,d)/length(ds);gl_Position=V*vec4(F-ds*mx.x+dc*mx.y,1);}")
@@ -325,24 +324,23 @@ g.uniformMatrix4fv(l("V"),0,[.25,0,0,0,0,.177,.088,0,0,.177,-.088,0,0,0,.354,1])
 
 g.enable(2929)
 
-(dr=_=>{
-  dx=mx-wPx;dy=my-wPy
-  h=Math.hypot(dx,dy)
-  nh=Math.max(-1,Math.min(1,h))*0.03
-  if(h>0.01){wPx+=dx*nh/h;wPy+=dy*nh/h;wA=Math.atan2(dy,dx)}
+dr=_=>{
+dx=mx-wPx;dy=my-wPy
+h=Math.hypot(dx,dy)
+nh=Math.max(-1,Math.min(1,h))*.03
+if(h>.01){wPx+=dx*nh/h;wPy+=dy*nh/h;wA=Math.atan2(dy,dx)}
 
-  updateCycle()
+uC()
 
-  g.uniform2f(pM, wPx, wPy)
+g.uniform2f(pM, wPx, wPy)
 
-  g.uniform3fv(pF, lO)
-  g.drawArrays(3,0,3)
+f=(p,O)=>g.uniform3fv(p,O)&g.drawArrays(3,0,3)
+f(pF,lO)
+f(pF,rO)
 
-  g.uniform3fv(pF, rO)
-  g.drawArrays(3,0,3)
-
-  requestAnimationFrame(dr)
-})()
+requestAnimationFrame(dr)
+}
+dr()
 
       // END
     </script>
