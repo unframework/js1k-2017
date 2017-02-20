@@ -258,6 +258,8 @@ console.log(multiply([],
   lookAt([], [ 0, -2, 2 ], [ 0, 0, 0 ], [ 0, 0, 1 ])
 ));
 
+// cs=(c,s)=>g.shaderSource(A=g.createShader(c),s)||g.compileShader(A)||console.log(g.getShaderInfoLog(A))||g.attachShader(P,A)
+
 // ----
 // tracker (from https://github.com/unframework/office-space/blob/2e33c164fac162954e787141693743fbf1f96f25/src/WalkCycleTracker.coffee)
 dt=.016
@@ -265,7 +267,7 @@ wPx=0
 wPy=0
 wA=0
 
-F_O=0.2
+F_O=0.3
 S_D=0.15
 sT=0
 wfLsP=[0,F_O]
@@ -308,15 +310,15 @@ lfOn ? f(wfLsP,wfLlP,lfO,wfRsP,wfRlP,rfO) : f(wfRsP,wfRlP,rfO,wfLsP,wfLlP,lfO)
 // prog
 P = g.createProgram()
 cs=(c,s)=>g.shaderSource(A=g.createShader(c),s)||g.compileShader(A)||g.attachShader(P,A)
-cs(35633,"precision mediump float; attribute vec2 P; uniform vec3 pos; uniform float size; uniform mat4 view; varying vec2 fP; void main(){fP = P; gl_Position=view * vec4(pos + vec3(P*size, 0),1);}")
-cs(35632,"precision mediump float; varying vec2 fP; void main(){ if(dot(fP,fP) > 1.0) discard; gl_FragColor=vec4(fP * 0.2 + vec2(0.6, 0.6), 0, 1); }")
+cs(35633,"precision mediump float; attribute vec2 mx; uniform vec2 M; uniform vec3 F; uniform mat4 view; void main(){vec3 ds=F-vec3(M, 0.2);float d=length(ds.xy);vec3 dc=vec3(-ds.z*ds.xy/d,d)/length(ds);gl_Position=view*vec4(F-ds*mx.x+dc*mx.y,1);}")
+cs(35632,"precision mediump float; void main(){ gl_FragColor=vec4(0.2, 0.2, 0.2, 1); }")
 g.linkProgram(P);g.useProgram(P)
 
-progSize=g.getUniformLocation(P,"size")
-progPos=g.getUniformLocation(P,"pos")
+pM=g.getUniformLocation(P,"M")
+pF=g.getUniformLocation(P,"F")
 
 g.bindBuffer(A=34962,g.createBuffer())
-g.bufferData(A,new Float32Array([-1,-1, 1,-1, 1,1, -1,1]),35044)
+g.bufferData(A,new Float32Array([1,0,.5,.2,0,0]),35044)
 
 g.enableVertexAttribArray(0)
 g.vertexAttribPointer(b=0,2,5126,0,0,0)
@@ -336,21 +338,13 @@ mx=0;my=0;a.onmousemove=(e)=>{mx=8*e.clientX/aw-4;my=(8*(ah-e.clientY)/ah-4)/0.7
 
   updateCycle()
 
-  g.uniform1f(progSize, 0.15)
-  g.uniform3f(progPos, wPx, wPy, 0.3)
-  g.drawArrays(6,0,4);
+  g.uniform2f(pM, wPx, wPy)
 
-  g.uniform1f(progSize, 0.1)
-  g.uniform3fv(progPos, lfO)
-  g.drawArrays(6,0,4);
+  g.uniform3fv(pF, lfO)
+  g.drawArrays(3,0,3);
 
-  g.uniform1f(progSize, 0.1)
-  g.uniform3fv(progPos, rfO)
-  g.drawArrays(6,0,4);
-
-  g.uniform1f(progSize, 0.3)
-  g.uniform3f(progPos, mx, my, 0)
-  g.drawArrays(6,0,4);
+  g.uniform3fv(pF, rfO)
+  g.drawArrays(3,0,3);
 
   requestAnimationFrame(draw);
 })()
