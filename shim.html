@@ -267,8 +267,8 @@ wPx=0
 wPy=0
 wA=0
 
-F_=0.3
-SD=0.15
+F_=.3
+SD=.15
 sT=0
 wfLsP=[0,F_]
 wfLlP=[0,F_]
@@ -281,28 +281,26 @@ lO=[]
 rO=[]
 
 aw=a.width;ah=a.height
-mx=0;my=0;a.onmousemove=e=>{mx=8*e.clientX/aw-4;my=(8*(ah-e.clientY)/ah-4)/0.707}
+mx=my=0;a.onmousemove=e=>{mx=8*e.clientX/aw-4;my=(8*(ah-e.clientY)/ah-4)/.707}
 
 l2=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
 s3=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
 
-uC = () => {
-sT+=dt
+uC=_=>{sT+=dt
 if(sT>SD)sT-=SD,lf=!lf
 ph=sT/SD
 fa=1-.5*(1-Math.cos(Math.PI*ph))
 fa*=fa
-f=(msP,mlP,mO,ssP,slP,sO) => {
+f=(msP,mlP,mO,ssP,slP,sO)=>{
 o=F_*(lf*2-1)
 mcP[0]=wPx-Math.sin(wA)*o;mcP[1]=wPy+Math.cos(wA)*o
 rst=SD-sT
-l2(meP,mcP,msP,-(rst+(1-0.5)*SD) / (0.5*SD+sT))
+l2(meP,mcP,msP,-(rst+(1-.5)*SD) / (.5*SD+sT))
 l2(mlP,msP,meP,1-fa)
-s3(mO,mlP[0],mlP[1],ph*fa*2*0.75)
+s3(mO,mlP[0],mlP[1],ph*fa*2*.75)
 s3(sO,ssP[0]=slP[0],ssP[1]=slP[1],0)
 }
-lf?f(wfLsP,wfLlP,lO,wfRsP,wfRlP,rO):f(wfRsP,wfRlP,rO,wfLsP,wfLlP,lO)
-}
+lf?f(wfLsP,wfLlP,lO,wfRsP,wfRlP,rO):f(wfRsP,wfRlP,rO,wfLsP,wfLlP,lO)}
 
 P = g.createProgram()
 cs=(c,s)=>g.shaderSource(A=g.createShader(c),s)||g.compileShader(A)||g.attachShader(P,A)
