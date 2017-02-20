@@ -280,6 +280,9 @@ meP=[]
 lO=[]
 rO=[]
 
+aw=a.width;ah=a.height
+mx=0;my=0;a.onmousemove=e=>{mx=8*e.clientX/aw-4;my=(8*(ah-e.clientY)/ah-4)/0.707}
+
 l2=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
 s3=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
 
@@ -321,9 +324,6 @@ g.vertexAttribPointer(0,2,5126,0,0,0)
 g.uniformMatrix4fv(l("V"),0,[.25,0,0,0,0,.177,.088,0,0,.177,-.088,0,0,0,.354,1])
 
 g.enable(2929)
-
-aw=a.width;ah=a.height
-mx=0;my=0;a.onmousemove=(e)=>{mx=8*e.clientX/aw-4;my=(8*(ah-e.clientY)/ah-4)/0.707}
 
 (dr=_=>{
   dx=mx-wPx;dy=my-wPy
