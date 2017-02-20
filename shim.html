@@ -255,14 +255,14 @@ function multiply(out, a, b) {
 
 console.log(multiply([],
   ortho([], -4, 4, -4, 4, -8, 8),
-  lookAt([], [ 2, 2, 2 ], [ 0, 0, 0 ], [ 0, 0, 1 ])
+  lookAt([], [ 0, -2, 2 ], [ 0, 0, 0 ], [ 0, 0, 1 ])
 ));
 
 // ----
 f32=Float32Array
 
 // view
-view = new f32([-.177,-.102,-.072,0,.177,-.102,-.072,0,0,.204,-.072,0,-0,-0,.433,1])
+view = new f32([.25,0,0,0,0,.177,.088,0,0,.177,-.088,0,0,0,.354,1])
 
 // tracker (from https://github.com/unframework/office-space/blob/2e33c164fac162954e787141693743fbf1f96f25/src/WalkCycleTracker.coffee)
 dt=.016
@@ -337,14 +337,15 @@ g.uniformMatrix4fv(g.getUniformLocation(P,"view"), false, view)
 
 g.enable(2929);
 
-time = 0;
-(draw = () => {
-  time += dt;
+aw=a.width;ah=a.height
+mx=0;my=0;a.onmousemove=(e)=>{mx=8*e.clientX/aw-4;my=(8*(ah-e.clientY)/ah-4)/0.707}
 
-  apos = time * 0.5;
-  wPx=2 * Math.cos(apos);wPy=2 * Math.sin(apos)
-  wA = apos + Math.PI / 2;
-  updateCycle(dt)
+(draw = () => {
+  dx=mx-wPx;dy=my-wPy
+  wPx+=Math.max(-1,Math.min(1,dx*0.01));wPy+=Math.max(-1,Math.min(1,dy*0.01))
+  wA=dx*dx+dy*dy>0.1?Math.atan2(dy,dx):wA
+
+  updateCycle()
 
   g.uniform1f(progSize, 0.15)
   g.uniform3f(progPos, wPx, wPy, 0.3)
@@ -356,6 +357,10 @@ time = 0;
 
   g.uniform1f(progSize, 0.1)
   g.uniform3fv(progPos, footRMeshOffset)
+  g.drawArrays(6,0,4);
+
+  g.uniform1f(progSize, 0.3)
+  g.uniform3f(progPos, mx, my, 0)
   g.drawArrays(6,0,4);
 
   requestAnimationFrame(draw);
