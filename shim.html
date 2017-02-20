@@ -157,16 +157,14 @@ s3(m,ml[0],ml[1],ph*fa*2*.75)
 s3(s,ss[0]=sl[0],ss[1]=sl[1],0)
 }
 L?f(Ls,Ll,lO,Rs,Rl,rO):f(Rs,Rl,rO,Ls,Ll,lO)}
-c.translate(a.width/2,a.height/2)
-c.scale(a.width/8,-.707*a.height/8)
+c.translate(aw/2,ah/2)
+c.scale(aw/8,-.707*ah/8)
 c.fillStyle='#ccc'
 c.strokeStyle='#222'
 c.lineWidth=.05
 c.lineJoin='bevel'
 t=5
-dr=_=>{
-dx=mx-x;dy=my-y
-h=M.hypot(dx,dy)
+dr=_=>{h=M.hypot(dx=mx-x,dy=my-y)
 h=M.max(-1,M.min(1,h))*.03/h
 if(h>.01){x+=dx*h;y+=dy*h;wA=M.atan2(dy,dx)}
 uC()
@@ -174,8 +172,7 @@ c.beginPath()
 c.fillRect(-4,-6,8,12);
 [lO,[(lO[0]+x)*.5,(lO[1]+y)*.5,(lO[2]+z)*.5+.2],[x,y,z],[(x+rO[0])*.5,(y+rO[1])*.5,(z+rO[2])*.5+.2],rO].map(v=>c.lineTo(v[0],v[1]+v[2]))
 c.stroke()
-requestAnimationFrame(dr)
-}
+requestAnimationFrame(dr)}
 dr()
       // END
     </script>
