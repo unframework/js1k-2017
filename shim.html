@@ -264,9 +264,8 @@ console.log(multiply([],
 // tracker (from https://github.com/unframework/office-space/blob/2e33c164fac162954e787141693743fbf1f96f25/src/WalkCycleTracker.coffee)
 M=Math
 dt=.016
-wx=wy=wA=sT=lf=0
-F=.3
-S=.15
+x=y=wA=sT=L=0
+F=S=.3
 Ls=[0,F]
 Ll=[0,F]
 Rs=[0,-F]
@@ -275,66 +274,51 @@ mc=[]
 me=[]
 lO=[]
 rO=[]
-
 aw=a.width;ah=a.height
 mx=my=0;a.onmousemove=e=>{mx=8*e.clientX/aw-4;my=(8*(ah-e.clientY)/ah-4)/.707}
-
 l2=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
 s3=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
-
 uC=_=>{sT+=dt
-if(sT>S)sT-=S,lf=!lf
+if(sT>S)sT-=S,L=!L
 ph=sT/S
 fa=.5+.5*M.cos(M.PI*ph)
 fa*=fa
 f=(ms,ml,m,ss,sl,s)=>{
-o=F*lf*2-F
-mc[0]=wx-M.sin(wA)*o;mc[1]=wy+M.cos(wA)*o
+o=F*L*2-F
+mc[0]=x-M.sin(wA)*o;mc[1]=y+M.cos(wA)*o
 l2(me,mc,ms,-(S-sT+.5*S)/(.5*S+sT))
 l2(ml,ms,me,1-fa)
 s3(m,ml[0],ml[1],ph*fa*2*.75)
 s3(s,ss[0]=sl[0],ss[1]=sl[1],0)
 }
-lf?f(Ls,Ll,lO,Rs,Rl,rO):f(Rs,Rl,rO,Ls,Ll,lO)}
-
+L?f(Ls,Ll,lO,Rs,Rl,rO):f(Rs,Rl,rO,Ls,Ll,lO)}
 P=g.createProgram()
 cs=(c,s)=>g.shaderSource(A=g.createShader(c),s)&g.compileShader(A)&g.attachShader(P,A)
-cs(35633,"precision mediump float;attribute vec2 mx;uniform vec2 M;uniform vec3 F;uniform mat4 V;void main(){vec3 ds=F-vec3(M,.2);float d=length(ds.xy);vec3 dc=vec3(-ds.z*ds.xy/d,d)/length(ds);gl_Position=V*vec4(F-ds*mx.x+dc*mx.y,1);}")
+cs(35633,"precision mediump float;attribute vec2 mx;uniform vec2 M;uniform vec3 F;uniform mat4 V;void main(){vec3 s=F-vec3(M,.2);float d=length(s.xy);vec3 dc=vec3(-s.z*s.xy/d,d)/length(s);gl_Position=V*vec4(F-s*mx.x+dc*mx.y,1);}")
 cs(35632,"precision mediump float;void main(){gl_FragColor=vec4(.2,.2,.2,1);}")
 g.linkProgram(P);g.useProgram(P)
-
 l=n=>g.getUniformLocation(P,n)
 pM=l("M")
 pF=l("F")
-
 g.bindBuffer(A=34962,g.createBuffer())
 g.bufferData(A,new Float32Array([1,0,.5,.2,0,0]),35044)
-
 g.enableVertexAttribArray(0)
 g.vertexAttribPointer(0,2,5126,0,0,0)
-
 g.uniformMatrix4fv(l("V"),0,[.25,0,0,0,0,.177,.088,0,0,.177,-.088,0,0,0,.354,1])
-
 g.enable(2929)
-
 dr=_=>{
-dx=mx-wx;dy=my-wy
+dx=mx-x;dy=my-y
 h=M.hypot(dx,dy)
 nh=M.max(-1,M.min(1,h))*.03
-if(h>.01){wx+=dx*nh/h;wy+=dy*nh/h;wA=M.atan2(dy,dx)}
-
+if(h>.01){x+=dx*nh/h;y+=dy*nh/h;wA=M.atan2(dy,dx)}
 uC()
-
-g.uniform2f(pM, wx, wy)
-
+g.uniform2f(pM,x,y)
 f=(p,O)=>g.uniform3fv(p,O)&g.drawArrays(3,0,3)
 f(pF,lO)
 f(pF,rO)
-
 requestAnimationFrame(dr)
 }
 dr()
-
       // END
     </script>
     <script>
