@@ -283,8 +283,6 @@ tmfeP=[]
 lfO=new f32(3)
 rfO=new f32(3)
 
-v2s=(v,a,b)=>{v[0]=a;v[1]=b}
-v2c=(v,a)=>{v[0]=a[0];v[1]=a[1]}
 v2l=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
 v3s=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
 
@@ -298,14 +296,14 @@ fa*=fa
 
 f = (mfsP,mflP,mfO,sfsP,sflP,sfO) => {
 flo = F_O*(lfOn ? 1 : -1);
-v2s(tmfcP,wPx-Math.sin(wA)*flo,wPy+Math.cos(wA)*flo)
+tmfcP[0]=wPx-Math.sin(wA)*flo;tmfcP[1]=wPy+Math.cos(wA)*flo
 
 rst = S_D - sT;
 v2l(tmfeP,tmfcP,mfsP,-(rst+(1-0.5)*S_D) / (0.5*S_D+sT));
 v2l(mflP,mfsP,tmfeP,1-fa);
 v3s(mfO,mflP[0],mflP[1],ph*fa*2*0.75);
 
-v2c(sfsP,sflP);
+sfsP[0]=sflP[0];sfsP[1]=sflP[1]
 v3s(sfO,sfsP[0],sfsP[1],0);
 }
 
