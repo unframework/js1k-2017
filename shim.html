@@ -167,8 +167,8 @@ t=5
 dr=_=>{
 dx=mx-x;dy=my-y
 h=M.hypot(dx,dy)
-nh=M.max(-1,M.min(1,h))*.03
-if(h>.01){x+=dx*nh/h;y+=dy*nh/h;wA=M.atan2(dy,dx)}
+h=M.max(-1,M.min(1,h))*.03/h
+if(h>.01){x+=dx*h;y+=dy*h;wA=M.atan2(dy,dx)}
 uC()
 c.beginPath()
 c.fillRect(-4,-6,8,12);
