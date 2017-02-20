@@ -307,13 +307,9 @@ lfOn ? f(wfLsP,wfLlP,lfO,wfRsP,wfRlP,rfO) : f(wfRsP,wfRlP,rfO,wfLsP,wfLlP,lfO)
 
 // prog
 P = g.createProgram()
-
-g.shaderSource(A=g.createShader(35633),"precision mediump float; attribute vec2 P; uniform vec3 pos; uniform float size; uniform mat4 view; varying vec2 fP; void main(){fP = P; gl_Position=view * vec4(pos + vec3(P*size, 0),1);}")
-g.compileShader(A);console.log(g.getShaderInfoLog(A));g.attachShader(P,A)
-
-g.shaderSource(A=g.createShader(35632),"precision mediump float; varying vec2 fP; void main(){ if(dot(fP,fP) > 1.0) discard; gl_FragColor=vec4(fP * 0.2 + vec2(0.6, 0.6), 0, 1); }")
-g.compileShader(A);console.log(g.getShaderInfoLog(A));g.attachShader(P,A)
-
+cs=(c,s)=>g.shaderSource(A=g.createShader(c),s)||g.compileShader(A)||g.attachShader(P,A)
+cs(35633,"precision mediump float; attribute vec2 P; uniform vec3 pos; uniform float size; uniform mat4 view; varying vec2 fP; void main(){fP = P; gl_Position=view * vec4(pos + vec3(P*size, 0),1);}")
+cs(35632,"precision mediump float; varying vec2 fP; void main(){ if(dot(fP,fP) > 1.0) discard; gl_FragColor=vec4(fP * 0.2 + vec2(0.6, 0.6), 0, 1); }")
 g.linkProgram(P);g.useProgram(P)
 
 progSize=g.getUniformLocation(P,"size")
