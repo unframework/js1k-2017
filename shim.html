@@ -270,24 +270,23 @@ wPx=0
 wPy=0
 wA=0
 
-F_O = 0.2;
-S_D = 0.15;
-sT = 0;
-wfLsP = [ 2 - F_O, 0 ];
-wfLlP = [ 2 - F_O, 0 ];
-wfRsP = [ 2 + F_O, 0 ];
-wfRlP = [ 2 + F_O, 0 ];
-lfOn = true;
-tmfcP = [ 0, 0 ];
-tmfeP = [ 0, 0 ];
-footLMeshOffset = new f32(3);
-footRMeshOffset = new f32(3);
+F_O=0.2
+S_D=0.15
+sT=0
+wfLsP=[0,F_O]
+wfLlP=[0,F_O]
+wfRsP=[0,-F_O]
+wfRlP=[0,-F_O]
+lfOn=true
+tmfcP=[]
+tmfeP=[]
+lfO=new f32(3)
+rfO=new f32(3)
 
-v2s = (v,a,b) => {v[0] = a;v[1] = b}
-v2c = (v,a) => {v[0] = a[0];v[1] = a[1]}
-v2l = (v,a,b,k) => {v[0] = a[0] + (b[0] - a[0]) * k;v[1] = a[1] + (b[1] - a[1]) * k}
-
-v3s = (v,a,b,c) => {v[0] = a;v[1] = b;v[2] = c}
+v2s=(v,a,b)=>{v[0]=a;v[1]=b}
+v2c=(v,a)=>{v[0]=a[0];v[1]=a[1]}
+v2l=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
+v3s=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
 
 updateCycle = () => {
 sT+=dt
@@ -310,7 +309,7 @@ v2c(sfsP, sflP);
 v3s(sfO, sfsP[0], sfsP[1], 0);
 }
 
-lfOn ? f(wfLsP, wfLlP, footLMeshOffset, wfRsP, wfRlP, footRMeshOffset) : f(wfRsP, wfRlP, footRMeshOffset, wfLsP, wfLlP, footLMeshOffset)
+lfOn ? f(wfLsP, wfLlP, lfO, wfRsP, wfRlP, rfO) : f(wfRsP, wfRlP, rfO, wfLsP, wfLlP, lfO)
 }
 
 // prog
@@ -353,11 +352,11 @@ mx=0;my=0;a.onmousemove=(e)=>{mx=8*e.clientX/aw-4;my=(8*(ah-e.clientY)/ah-4)/0.7
   g.drawArrays(6,0,4);
 
   g.uniform1f(progSize, 0.1)
-  g.uniform3fv(progPos, footLMeshOffset)
+  g.uniform3fv(progPos, lfO)
   g.drawArrays(6,0,4);
 
   g.uniform1f(progSize, 0.1)
-  g.uniform3fv(progPos, footRMeshOffset)
+  g.uniform3fv(progPos, rfO)
   g.drawArrays(6,0,4);
 
   g.uniform1f(progSize, 0.3)
