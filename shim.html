@@ -264,14 +264,13 @@ console.log(multiply([],
 // tracker (from https://github.com/unframework/office-space/blob/2e33c164fac162954e787141693743fbf1f96f25/src/WalkCycleTracker.coffee)
 M=Math
 dt=.016
-wx=wy=wA=sT=0
-F_=.3
-SD=.15
-Ls=[0,F_]
-Ll=[0,F_]
-Rs=[0,-F_]
-Rl=[0,-F_]
-lf=1
+wx=wy=wA=sT=lf=0
+F=.3
+S=.15
+Ls=[0,F]
+Ll=[0,F]
+Rs=[0,-F]
+Rl=[0,-F]
 mc=[]
 me=[]
 lO=[]
@@ -284,15 +283,14 @@ l2=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
 s3=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
 
 uC=_=>{sT+=dt
-if(sT>SD)sT-=SD,lf=!lf
-ph=sT/SD
-fa=1-.5*(1-M.cos(M.PI*ph))
+if(sT>S)sT-=S,lf=!lf
+ph=sT/S
+fa=.5+.5*M.cos(M.PI*ph)
 fa*=fa
 f=(ms,ml,m,ss,sl,s)=>{
-o=F_*(lf*2-1)
+o=F*lf*2-F
 mc[0]=wx-M.sin(wA)*o;mc[1]=wy+M.cos(wA)*o
-rst=SD-sT
-l2(me,mc,ms,-(rst+(1-.5)*SD) / (.5*SD+sT))
+l2(me,mc,ms,-(S-sT+.5*S)/(.5*S+sT))
 l2(ml,ms,me,1-fa)
 s3(m,ml[0],ml[1],ph*fa*2*.75)
 s3(s,ss[0]=sl[0],ss[1]=sl[1],0)
