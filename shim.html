@@ -296,20 +296,20 @@ ph=sT/S_D
 fa=1-0.5*(1-Math.cos(Math.PI*ph))
 fa*=fa
 
-f = (mfsP, mflP, mfO, sfsP, sflP, sfO) => {
-flo = F_O * (lfOn ? 1 : -1);
-v2s(tmfcP, wPx - Math.sin(wA) * flo, wPy + Math.cos(wA) * flo)
+f = (mfsP,mflP,mfO,sfsP,sflP,sfO) => {
+flo = F_O*(lfOn ? 1 : -1);
+v2s(tmfcP,wPx-Math.sin(wA)*flo,wPy+Math.cos(wA)*flo)
 
 rst = S_D - sT;
-v2l(tmfeP, tmfcP, mfsP, -(rst + (1 - 0.5) * S_D) / (0.5 * S_D + sT));
-v2l(mflP, mfsP, tmfeP, 1 - fa);
-v3s(mfO, mflP[0], mflP[1], ph * fa * 2 * 0.75);
+v2l(tmfeP,tmfcP,mfsP,-(rst+(1-0.5)*S_D) / (0.5*S_D+sT));
+v2l(mflP,mfsP,tmfeP,1-fa);
+v3s(mfO,mflP[0],mflP[1],ph*fa*2*0.75);
 
-v2c(sfsP, sflP);
-v3s(sfO, sfsP[0], sfsP[1], 0);
+v2c(sfsP,sflP);
+v3s(sfO,sfsP[0],sfsP[1],0);
 }
 
-lfOn ? f(wfLsP, wfLlP, lfO, wfRsP, wfRlP, rfO) : f(wfRsP, wfRlP, rfO, wfLsP, wfLlP, lfO)
+lfOn ? f(wfLsP,wfLlP,lfO,wfRsP,wfRlP,rfO) : f(wfRsP,wfRlP,rfO,wfLsP,wfLlP,lfO)
 }
 
 // prog
