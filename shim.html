@@ -302,10 +302,10 @@ s3(sO,ssP[0]=slP[0],ssP[1]=slP[1],0)
 }
 lf?f(wfLsP,wfLlP,lO,wfRsP,wfRlP,rO):f(wfRsP,wfRlP,rO,wfLsP,wfLlP,lO)}
 
-P = g.createProgram()
-cs=(c,s)=>g.shaderSource(A=g.createShader(c),s)||g.compileShader(A)||g.attachShader(P,A)
-cs(35633,"precision mediump float; attribute vec2 mx; uniform vec2 M; uniform vec3 F; uniform mat4 V; void main(){vec3 ds=F-vec3(M, 0.2);float d=length(ds.xy);vec3 dc=vec3(-ds.z*ds.xy/d,d)/length(ds);gl_Position=V*vec4(F-ds*mx.x+dc*mx.y,1);}")
-cs(35632,"precision mediump float; void main(){ gl_FragColor=vec4(0.2, 0.2, 0.2, 1); }")
+P=g.createProgram()
+cs=(c,s)=>g.shaderSource(A=g.createShader(c),s)&g.compileShader(A)&g.attachShader(P,A)
+cs(35633,"precision mediump float;attribute vec2 mx;uniform vec2 M;uniform vec3 F;uniform mat4 V;void main(){vec3 ds=F-vec3(M,.2);float d=length(ds.xy);vec3 dc=vec3(-ds.z*ds.xy/d,d)/length(ds);gl_Position=V*vec4(F-ds*mx.x+dc*mx.y,1);}")
+cs(35632,"precision mediump float;void main(){gl_FragColor=vec4(.2,.2,.2,1);}")
 g.linkProgram(P);g.useProgram(P)
 
 l=n=>g.getUniformLocation(P,n)
