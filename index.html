@@ -146,14 +146,13 @@ l2=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
 s3=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
 U=_=>{t+=T
 if(t>S)t-=S,L=!L
-p=t/S
-G=.5+.5*M.cos(M.PI*p)
+G=.5+.5*M.cos(M.PI*t/S)
 G*=G
 f=(a,b,m,c,d,s)=>{
 o=F*L*2-F
 l2(z=[],[x-M.sin(O)*o,y+M.cos(O)*o],a,-(1.25*S-t)/(.75*S+t))
 l2(b,a,z,1-G)
-s3(m,b[0],b[1],p*G*.6*u)
+s3(m,b[0],b[1],G*.6*u*t/S)
 s3(s,c[0]=d[0],c[1]=d[1],0)
 }
 L?f(A,B,l,C,D,r):f(C,D,r,A,B,l)}
