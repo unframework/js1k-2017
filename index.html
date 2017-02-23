@@ -141,7 +141,7 @@ l=[]
 r=[]
 u=0
 w=a.width;h=a.height
-X=0;Y=-8;onmousemove=e=>{X=8*e.clientX/w-4;Y=(8*(h-e.clientY)/h-4)/.707}
+X=0;Y=-6;onmousemove=e=>{X=6*e.clientX/h-3*w/h;Y=(6*(h-e.clientY)/h-3)/.707}
 l2=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
 s3=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
 U=_=>{t+=T
@@ -157,7 +157,7 @@ s3(s,c[0]=d[0],c[1]=d[1],0)
 }
 L?f(A,B,l,C,D,r):f(C,D,r,A,B,l)}
 c.translate(w/2,h/2)
-c.scale(w/8,-.707*h/8)
+c.scale(h/6,-.707*h/6)
 c.lineJoin=c.lineCap='round'
 Z=h=>{h=M.hypot(dx=X-x,dy=Y-y)
 if(h<3)O=M.atan2(-dy,-dx)
@@ -168,7 +168,7 @@ E('#bcb',15,[[0,0,0]])
 E('#9a9',.7,[[x,y,0]])
 ;[l,r].map(l=>E('#eee',.1,[l,[l[0],l[1],l[2]+.6]]))
 E('#333',.9,[[x,y,.6]])
-E('#222',.6,[[x,y,.65],[x+3*dx*h,y+3*dy*h,1.8]])
+E('#222',.6,[[x,y,.65],[x+3*dx*h,y+3*dy*h,1.5]])
 requestAnimationFrame(Z)}
 Z()
       // END
