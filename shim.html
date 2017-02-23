@@ -157,16 +157,15 @@ s3(s,c[0]=d[0],c[1]=d[1],0)
 L?f(Ls,Ll,l,Rs,Rl,r):f(Rs,Rl,r,Ls,Ll,l)}
 c.translate(w/2,h/2)
 c.scale(w/8,-.707*h/8)
-c.lineWidth=.1
 c.lineJoin=c.lineCap='round'
 D=h=>{h=M.hypot(dx=mx-x,dy=my-y)
 if(h>.01){h=M.max(-1,M.min(1,h))*.03/h;x+=dx*h;y+=dy*h;wA=M.atan2(dy,dx)}
 U()
-dr=(s,w,p)=>{c.strokeStyle=s;c.lineWidth=w;c.beginPath();p.map(v=>c.lineTo(v[0],v[1]+v[2]));c.stroke()}
-dr('#ccc',15,[[0,0,0]])
-dr('#bbb',.5,[[x,y,0]])
-;[l,r].forEach(l=>dr('#444',.1,[l,[(l[0]+x)*.5,(l[1]+y)*.5,(l[2]+z)*.5+.6],[x,y,z]]))
-dr('#333',.3,[[x,y,.6],[x,y,.9]])
+E=(s,w,p)=>{c.strokeStyle=s;c.lineWidth=w;c.beginPath();p.map(v=>c.lineTo(v[0],v[1]+v[2]));c.stroke()}
+E('#ccc',15,[[0,0,0]])
+E('#bbb',.5,[[x,y,0]])
+;[l,r].forEach(l=>E('#444',.1,[l,[(l[0]+x)*.5,(l[1]+y)*.5,(l[2]+z)*.5+.6],[x,y,z]]))
+E('#333',.3,[[x,y,.6],[x,y,.9]])
 requestAnimationFrame(D)}
 D()
       // END
