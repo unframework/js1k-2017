@@ -130,7 +130,7 @@
 M=Math
 T=.016
 x=y=t=L=0
-O=M.PI/2
+O=0
 F=.1
 S=.15
 A=[-F,0]
@@ -140,7 +140,7 @@ D=[F,0]
 l=[]
 r=[]
 w=a.width;h=a.height
-X=Y=0;a.onmousemove=e=>{X=8*e.clientX/w-4;Y=(8*(h-e.clientY)/h-4)/.707}
+X=0;Y=-8;a.onmousemove=e=>{X=8*e.clientX/w-4;Y=(8*(h-e.clientY)/h-4)/.707}
 l2=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
 s3=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
 U=_=>{t+=T
@@ -160,7 +160,7 @@ c.translate(w/2,h/2)
 c.scale(w/8,-.707*h/8)
 c.lineJoin=c.lineCap='round'
 Z=h=>{h=M.hypot(dx=X-x,dy=Y-y)
-if(h>.001){h=M.max(-1,M.min(1,h))*.03/h;O=M.atan2(dy,dx);dx*=h;dy*=h;x+=dx;y+=dy}
+if(h>.001){h=M.max(0,M.min(1,3-h)*.03)/h;O=M.atan2(-dy,-dx);dx*=-h;dy*=-h;x+=dx;y+=dy}
 U()
 E=(s,w,p)=>{c.strokeStyle=s;c.lineWidth=w;c.beginPath();p.map(v=>c.lineTo(v[0],v[1]+v[2]));c.stroke()}
 E('#bbb',15,[[0,0,0]])
