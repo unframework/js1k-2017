@@ -139,6 +139,7 @@ C=[F,0]
 D=[F,0]
 l=[]
 r=[]
+u=0
 w=a.width;h=a.height
 X=0;Y=-8;onmousemove=e=>{X=8*e.clientX/w-4;Y=(8*(h-e.clientY)/h-4)/.707}
 l2=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
@@ -152,7 +153,7 @@ f=(a,b,m,c,d,s)=>{
 o=F*L*2-F
 l2(z=[],[x-M.sin(O)*o,y+M.cos(O)*o],a,-(S-t+.5*S)/(.5*S+t))
 l2(b,a,z,1-G)
-s3(m,b[0],b[1],p*G*.6)
+s3(m,b[0],b[1],p*G*.6*u)
 s3(s,c[0]=d[0],c[1]=d[1],0)
 }
 L?f(A,B,l,C,D,r):f(C,D,r,A,B,l)}
@@ -161,7 +162,7 @@ c.scale(w/8,-.707*h/8)
 c.lineJoin=c.lineCap='round'
 Z=h=>{h=M.hypot(dx=X-x,dy=Y-y)
 if(h<3)O=M.atan2(-dy,-dx)
-h=M.max(0,M.min(1,3-h)*.03)/h;x-=dx*h;y-=dy*h
+h=(u=M.max(0,M.min(2,3-h)))*.01/h;x-=dx*h;y-=dy*h
 U()
 E=(s,w,p)=>{c.strokeStyle=s;c.lineWidth=w;c.beginPath();p.map(v=>c.lineTo(v[0],v[1]+v[2]));c.stroke()}
 E('#bbb',15,[[0,0,0]])
