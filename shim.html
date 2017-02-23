@@ -160,14 +160,14 @@ c.translate(w/2,h/2)
 c.scale(w/8,-.707*h/8)
 c.lineJoin=c.lineCap='round'
 Z=h=>{h=M.hypot(dx=mx-x,dy=my-y)
-if(h>.01){h=M.max(-1,M.min(1,h))*.03/h;x+=dx*h;y+=dy*h;O=M.atan2(dy,dx)}
+if(h>.001){h=M.max(-1,M.min(1,h))*.03/h;O=M.atan2(dy,dx);dx*=h;dy*=h;x+=dx;y+=dy}
 U()
 E=(s,w,p)=>{c.strokeStyle=s;c.lineWidth=w;c.beginPath();p.map(v=>c.lineTo(v[0],v[1]+v[2]));c.stroke()}
 E('#bbb',15,[[0,0,0]])
 E('#999',.5,[[x,y,0]])
 ;[l,r].forEach(l=>E('#eee',.1,[l,[x,y,.5]]))
 E('#333',.6,[[x,y,.4]])
-E('#222',.4,[[x,y,.45],[x,y,1.3]])
+E('#222',.4,[[x,y,.45],[x-2*dx,y-2*dy,1.3]])
 requestAnimationFrame(Z)}
 Z()
       // END
