@@ -163,10 +163,8 @@ c.fillStyle='#ccc'
 c.strokeStyle='#222'
 c.lineWidth=.05
 c.lineJoin='bevel'
-t=5
 dr=_=>{h=M.hypot(dx=mx-x,dy=my-y)
-h=M.max(-1,M.min(1,h))*.03/h
-if(h>.01){x+=dx*h;y+=dy*h;wA=M.atan2(dy,dx)}
+if(h>.01){h=M.max(-1,M.min(1,h))*.03/h;x+=dx*h;y+=dy*h;wA=M.atan2(dy,dx)}
 uC()
 c.beginPath()
 c.fillRect(-4,-6,8,12);
