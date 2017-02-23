@@ -141,7 +141,7 @@ l=[]
 r=[]
 u=0
 w=a.width;h=a.height
-X=0;Y=-6;onmousemove=e=>{X=6*e.clientX/h-3*w/h;Y=(6*(h-e.clientY)/h-3)/.707}
+X=0;Y=-6;onmousemove=e=>{X=6*e.clientX/h-3*w/h;Y=(3-6*e.clientY/h)/.707}
 l2=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
 s3=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
 U=_=>{t+=T
