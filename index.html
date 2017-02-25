@@ -128,7 +128,6 @@
 // ----
 // tracker (from https://github.com/unframework/office-space/blob/2e33c164fac162954e787141693743fbf1f96f25/src/WalkCycleTracker.coffee)
 M=Math
-T=.016
 x=y=t=L=0
 O=1.6
 F=.1
@@ -144,7 +143,7 @@ w=a.width;h=a.height
 X=0;Y=-6;onmousemove=e=>{X=6*e.clientX/h-3*w/h;Y=(3-6*e.clientY/h)/.707}
 l2=(v,a,b,k)=>{v[0]=a[0]+(b[0]-a[0])*k;v[1]=a[1]+(b[1]-a[1])*k}
 s3=(v,a,b,c)=>{v[0]=a;v[1]=b;v[2]=c}
-U=_=>{t+=T
+U=_=>{t+=.02
 if(t>S)t-=S,L=!L
 G=.5+.5*M.cos(M.PI*t/S)
 G*=G
@@ -159,8 +158,8 @@ L?f(A,B,l,C,D,r):f(C,D,r,A,B,l)}
 c.translate(w/2,h/2)
 c.scale(h/6,-.707*h/6)
 c.lineJoin=c.lineCap='round'
-Z=h=>{h=M.hypot(dx=X-x,dy=Y-y)
-if(h<3)O=M.atan2(-dy,-dx)
+setInterval(h=>{h=M.hypot(dx=X-x,dy=Y-y)
+h<3?O=M.atan2(-dy,-dx):0
 h=(u=M.max(0,3*M.min(.2,3-h)))*.05/h;dx*=h;dy*=h
 x-=dx;y-=dy
 U()
@@ -169,9 +168,7 @@ E('#bcb',18,[[0,0,0]])
 E('#9a9',.7,[[x,y,0]])
 ;[l,r].map(l=>E('#eee',.1,[l,[x-5*dx,y-5*dy,u+.9]]))
 E('#333',.9,[[x,y,u]])
-E('#222',.6,[[x,y,u],[x+3*dx,y+3*dy,u+.9]])
-requestAnimationFrame(Z)}
-Z()
+E('#222',.6,[[x,y,u],[x+3*dx,y+3*dy,u+.9]])},20)
       // END
     </script>
     <script>
