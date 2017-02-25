@@ -161,14 +161,15 @@ c.scale(h/6,-.707*h/6)
 c.lineJoin=c.lineCap='round'
 Z=h=>{h=M.hypot(dx=X-x,dy=Y-y)
 if(h<3)O=M.atan2(-dy,-dx)
-h=(u=M.max(0,3*M.min(.2,3-h)))*.05/h;x-=dx*h;y-=dy*h
+h=(u=M.max(0,3*M.min(.2,3-h)))*.05/h;dx*=h;dy*=h
+x-=dx;y-=dy
 U()
 E=(s,w,p)=>{c.strokeStyle=s;c.lineWidth=w;c.beginPath();p.map(v=>c.lineTo(v[0],v[1]+v[2]));c.stroke()}
 E('#bcb',18,[[0,0,0]])
 E('#9a9',.7,[[x,y,0]])
-;[l,r].map(l=>E('#eee',.1,[l,[x-5*dx*h,y-5*dy*h,u+.9]]))
+;[l,r].map(l=>E('#eee',.1,[l,[x-5*dx,y-5*dy,u+.9]]))
 E('#333',.9,[[x,y,u]])
-E('#222',.6,[[x,y,u],[x+3*dx*h,y+3*dy*h,u+.9]])
+E('#222',.6,[[x,y,u],[x+3*dx,y+3*dy,u+.9]])
 requestAnimationFrame(Z)}
 Z()
       // END
