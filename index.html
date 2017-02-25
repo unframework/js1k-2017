@@ -164,10 +164,10 @@ h=(u=M.max(0,3*M.min(.2,3-h)))*.05/h;dx*=h;dy*=h
 x-=dx;y-=dy
 U()
 E=(s,w,p)=>{c.strokeStyle=s;c.lineWidth=w;c.beginPath();p.map(v=>c.lineTo(v[0],v[1]+v[2]));c.stroke()}
-E('#bcb',18,[[0,0,0]])
-E('#9a9',.7,[[x,y,0]])
+E('#bcb',18,[Z=[0,0,0],Z])
+E('#9a9',.7,[Z=[x,y,0],Z])
 ;[l,r].map(l=>E('#eee',.1,[l,[x-5*dx,y-5*dy,u+.9]]))
-E('#333',.9,[[x,y,u]])
+E('#333',.9,[Z=[x,y,u],Z])
 E('#222',.6,[[x,y,u],[x+3*dx,y+3*dy,u+.9]])},20)
       // END
     </script>
